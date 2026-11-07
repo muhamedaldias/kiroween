@@ -211,6 +211,16 @@ Rationale: Costume Contest is least crowded on "polish"; PBT gives credibility; 
 - Polish debt → allocate 40% time to UI last 10 days.
 - Team coordination → daily 15-min standup; ADRs for decisions.
 
+## 9. Second Idea (Alternative): "Séance" — Resurrect Dead APIs
+
+- **Category:** Resurrection (+ Best Demo, Best Startup)
+- **Concept:** Upload an OpenAPI/SOAP/WSDL spec from a deprecated API; Kiro generates a live mock + adapter that resurrects it behind a modern REST façade with synthetic data.
+- **Why strong:** Impact (legacy migration pain), Tech (MCP + spec-driven codegen + PBT round-trips), Innovation (auto-resurrection), Design (haunted séance UI), Presentation (before/after demo).
+- **Kiro usage:** Spec-driven generation, custom agent "Necromancer", hooks on spec change to regenerate, steering glossary, PBT (round-trip equivalence), MCP to fetch specs.
+- **Tech stack:** Kiro CLI, Python/FastAPI, React+Tailwind, Postgres, Docker.
+- **Demo plan:** Show dead API failing → upload spec → séance UI → live calls succeed → PBT report.
+- **Risks:** Scope creep in codegen. Mitigate: limit to OpenAPI 3 + one legacy format.
+
 ---
 
 ## 8. Sources & Notes
