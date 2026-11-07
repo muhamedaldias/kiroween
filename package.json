@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gen": "node -e \"console.log('run generator via src')\"",
+    "test": "vitest run"
   },
   "dependencies": {
     "react": "^19.3.1",
