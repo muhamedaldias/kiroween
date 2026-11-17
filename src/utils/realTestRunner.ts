@@ -32,7 +32,6 @@ export interface PerformanceMetrics {
   testsPerSecond: number;
   speedupFactor?: number;
   efficiency?: number;
-  throughput?: number;
 }
 
 export interface TestSuiteResult {
@@ -61,8 +60,7 @@ function calculatePerformanceMetrics(
   durations: number[],
   totalRuns: number,
   totalDuration: number,
-  isParallel: boolean,
-  numTests?: number
+  isParallel: boolean
 ): PerformanceMetrics {
   if (durations.length === 0) {
     return {
@@ -95,16 +93,10 @@ function calculatePerformanceMetrics(
   let speedupFactor: number | undefined;
   if (isParallel && durations.length > 1) {
     // Estimate speedup: parallel time vs sequential time
-    const sequentialTimeEstimate = sum; // Sum of all individual durations
+    // Sum of all individual durations gives us the sequential time estimate
+    const sequentialTimeEstimate = sum;
     speedupFactor = sequentialTimeEstimate / totalDuration;
-    
-    // For better estimation, account for the fact that tests run in batches
-    // If we have numTests and maxParallel, the theoretical max speedup is min(numTests, maxParallel)
-    // But we use the actual measured speedup
   }
-  
-  // Estimate efficiency
-  const efficiency = speedupFactor ? (speedupFactor / durations.length) * 100 : 0;
   
   // Calculate tests per second (number of test executions, not property runs)
   const testsPerSecond = durations.length > 0 ? (durations.length / (totalDuration / 1000)) : 0;
@@ -568,7 +560,9 @@ function createPredicate(prop: Property): (input: unknown) => boolean {
           lines.push(`Failed: ${results.failed}`);
           lines.push(`Total Runs: ${results.totalRuns}`);
           lines.push(`Duration: ${results.duration}ms`);
-          lines.push(`Success Rate: ${results.passed / (results.passed + results.failed) * 100}%`);
+          const totalTests = results.passed + results.failed;
+          const successRate = totalTests > 0 ? Math.round((results.passed / totalTests) * 100 * 100) / 100 : 0;
+          lines.push(`Success Rate: ${successRate}%`);
           
           // Add performance metrics if available
           if (results.metrics) {
