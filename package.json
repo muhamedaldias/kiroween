@@ -1,15 +1,24 @@
 {
   "name": "ghostspec",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+  "bin": {
+    "ghostspec": "./dist/cli.js"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:cli": "npm run build:core && npm run build:utils && tsc src/cli.ts --outDir dist --module nodenext --target es2023 --moduleResolution nodenext --esModuleInterop --skipLibCheck --ignoreConfig",
+    "build:core": "tsc src/core/spec.ts src/core/types.ts src/core/generate.ts --outDir dist/core --module nodenext --target es2023 --moduleResolution nodenext --esModuleInterop --skipLibCheck --ignoreConfig",
+    "build:utils": "tsc src/utils/testRunner.ts src/utils/storage.ts --outDir dist/utils --module nodenext --target es2023 --moduleResolution nodenext --esModuleInterop --skipLibCheck --ignoreConfig",
     "lint": "oxlint",
     "preview": "vite preview",
     "gen": "node -e \"console.log('run generator via src')\"",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "cli": "node dist/cli.js",
+    "cli:build": "npm run build:cli"
   },
   "dependencies": {
     "react": "^19.3.1",
